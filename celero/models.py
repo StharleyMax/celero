@@ -1,15 +1,13 @@
 from django.db import models
 from enum import Enum
 
-typeSex= Enum('F', 'M')
-
 class Athlete(models.Model):
     id = models.IntegerField(primary_key=True, auto_created=True)
     name = models.CharField(max_length=255)
     sex = models.CharField(max_length=1)
 
     def __str__(self):
-        return self.nome
+        return self.name
 
 class Event(models.Model):
     id = models.IntegerField(primary_key=True, auto_created=True)
