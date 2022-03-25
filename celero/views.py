@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from celero.models import Athlete
+from celero.serializer import AthleteSerializer
 
-# Create your views here.
+class AthleteViewSet(viewsets.ModelViewSet):
+    queryset = Athlete.objects.all()
+    serializer_class = AthleteSerializer
