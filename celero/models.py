@@ -37,8 +37,8 @@ class Game(models.Model):
     id = models.IntegerField(primary_key=True, auto_created=True)
     game = models.CharField(max_length=255)
     year = models.IntegerField()
-    city = models.CharField(100)
-    seasson = models.CharField(10)
+    city = models.CharField(max_length=100)
+    seasson = models.CharField(max_length=10)
 
     def __str__(self):
         return self.game
