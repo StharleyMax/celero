@@ -1,5 +1,5 @@
 from django.db import models
-from enum import Enum
+import pandas as pd
 
 class Athlete(models.Model):
     id = models.IntegerField(primary_key=True, auto_created=True)
