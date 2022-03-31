@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 import pandas as pd
 
@@ -23,7 +24,8 @@ class Athlete(models.Model):
 
 
 class Event(models.Model):
-    event = models.CharField(primary_key=True, max_length=100)
+    id = models.AutoField(primary_key=True)
+    event = models.CharField( max_length=100)
     sport = models.CharField(max_length=100)
 
     def __str__(self):
@@ -42,14 +44,15 @@ class Event(models.Model):
 
 
 class AthleteHasEvents(models.Model):
-    atlheteId = models.ForeignKey(Athlete, on_delete=models.CASCADE,)
-    eventId = models.ForeignKey(Event, on_delete=models.CASCADE)
+    atlhete = models.ForeignKey(Athlete, on_delete=models.CASCADE,)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
     age = models.IntegerField()
     noc = models.CharField(max_length=3)
     team = models.CharField(max_length=25)
     medal = models.CharField(max_length=6)
     height = models.IntegerField(null=True)
     weight = models.IntegerField(null=True)
+    game = models.CharField(max_length=100)
 
     def __str__(self):
         return self.eventId
@@ -57,14 +60,15 @@ class AthleteHasEvents(models.Model):
     def RenameColumnDataframe(dataframe: pd.DataFrame):
         return dataframe.rename(
             columns={
-                'ID': 'athleteId_id',
-                'Event': 'eventId_id',
+                'ID': 'athlete_id',
+                'Event': 'event_id',
                 'Age': 'age',
                 'NOC': 'noc',
                 'Team': 'team',
                 'Medal': 'medal',
                 'Height': 'height',
-                'Weight': 'weight'
+                'Weight': 'weight',
+                'Games': 'game'
             })
 
     def create(dataframe: pd.DataFrame, engine):
@@ -72,16 +76,17 @@ class AthleteHasEvents(models.Model):
         athleteHasEvent = dataframe[columns].drop_duplicates(columns)
         athleteHasEvent = AthleteHasEvents.RenameColumnDataframe(athleteHasEvent)
         athleteHasEvent.to_sql(
-            'testgames', if_exists="append", con=engine, index=False)
+            'celero_atlhetehasevents', if_exists="append", con=engine, index=False)
 
 # olimpiadas
 
 
 class Game(models.Model):
-    game = models.CharField(primary_key=True, max_length=255)
+    id = models.AutoField(primary_key=True)
+    game = models.CharField(max_length=255)
     year = models.IntegerField()
     city = models.CharField(max_length=100)
-    seasson = models.CharField(max_length=10)
+    season = models.CharField(max_length=10)
 
     def __str__(self):
         return self.game
@@ -104,14 +109,14 @@ class Game(models.Model):
 
 
 class EventsHasGame(models.Model):
-    gameId = models.ForeignKey(Game, on_delete=models.CASCADE,)
-    eventId = models.ForeignKey(Event, on_delete=models.CASCADE)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE,)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE)
 
     def RenameColumnDataframe(dataframe: pd.DataFrame):
         return dataframe.rename(
             columns={
-                'Games': 'gameId_id',
-                'Event': 'eventId_id',
+                'Games': 'game_id',
+                'Event': 'event_id',
             })
 
     def create(dataframe: pd.DataFrame, engine):
