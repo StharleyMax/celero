@@ -27,3 +27,9 @@ executar comando para importar os dados do dataset na base de dados
 Subir o servidor python
 > python manage.py runserver
 
+## Rotas
+
+> "atlhetes": "http://localhost:8000/atlhetes/", <br>
+    "events": "http://localhost:8000/events/",<br>
+    "atlhete_has_events": "http://localhost:8000/atlhete_has_events/", <br>
+    "games": "http://localhost:8000/games/"
