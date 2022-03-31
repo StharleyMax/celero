@@ -44,12 +44,13 @@ class Event(models.Model):
 
 
 class AthleteHasEvents(models.Model):
-    atlhete = models.ForeignKey(Athlete, on_delete=models.CASCADE,)
+    id = models.AutoField(primary_key=True)
+    athlete = models.ForeignKey(Athlete, on_delete=models.CASCADE,)
     event = models.ForeignKey(Event, on_delete=models.CASCADE)
-    age = models.IntegerField()
+    age = models.IntegerField(null=True)
     noc = models.CharField(max_length=3)
     team = models.CharField(max_length=25)
-    medal = models.CharField(max_length=6)
+    medal = models.CharField(max_length=6, null=True)
     height = models.IntegerField(null=True)
     weight = models.IntegerField(null=True)
     game = models.CharField(max_length=100)
@@ -76,7 +77,7 @@ class AthleteHasEvents(models.Model):
         athleteHasEvent = dataframe[columns].drop_duplicates(columns)
         athleteHasEvent = AthleteHasEvents.RenameColumnDataframe(athleteHasEvent)
         athleteHasEvent.to_sql(
-            'celero_atlhetehasevents', if_exists="append", con=engine, index=False)
+            'celero_athletehasevents', if_exists="append", con=engine, index=False)
 
 # olimpiadas
 
